@@ -23,7 +23,7 @@ export default function AdminLayout() {
     return (
         <div className="admin-layout">
             <aside className="admin-sidebar">
-                <div className="sidebar-logo">🍽️ Admin Panel</div>
+                <div className="sidebar-logo">🍃 Admin Resto</div>
                 <nav className="sidebar-nav">
                     {NAV.map(({ to, label, icon, end }) => (
                         <NavLink
@@ -37,11 +37,11 @@ export default function AdminLayout() {
                     ))}
                 </nav>
                 <div className="sidebar-footer">
-                    <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.5)', marginBottom: '10px' }}>
-                        👤 {admin?.full_name}
+                    <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '10px', fontWeight: 500 }}>
+                        👤 {admin?.full_name || 'Admin'}
                     </div>
-                    <button className="btn btn-outline btn-sm" style={{ color: '#ef4444', borderColor: '#ef4444', width: '100%' }} onClick={handleLogout}>
-                        Keluar
+                    <button className="btn btn-outline btn-sm" style={{ color: 'var(--accent-red)', borderColor: 'var(--border)', width: '100%' }} onClick={handleLogout}>
+                        🚪 Keluar
                     </button>
                 </div>
             </aside>

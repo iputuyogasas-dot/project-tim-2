@@ -21,7 +21,7 @@ export default function CheckoutPage() {
     const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
 
     const handleConfirm = async () => {
-        if (!session) return setError('Sesi tidak valid. Scan ulang QR.');
+        if (!session) return setError('Sesi meja tidak valid. Scan ulang QR Meja.');
         setLoading(true); setError('');
         try {
             const res = await api.post('/orders', {
@@ -39,77 +39,83 @@ export default function CheckoutPage() {
     };
 
     if (!session || cart.length === 0) return (
-        <div className="container" style={{ paddingTop: '40px', textAlign: 'center' }}>
-            <p>Keranjang kosong atau sesi tidak valid.</p>
-            <button className="btn btn-primary mt-3" onClick={() => navigate(-1)}>Kembali</button>
+        <div className="container" style={{ paddingTop: '60px', textAlign: 'center' }}>
+            <p style={{ color: 'var(--text-secondary)' }}>Keranjang kosong atau sesi meja tidak valid.</p>
+            <button className="btn btn-primary mt-3" onClick={() => navigate(-1)}>Kembali ke Menu</button>
         </div>
     );
 
     return (
-        <div style={{ minHeight: '100vh', background: 'var(--gray-50)' }}>
+        <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-page)' }}>
             <div className="topbar">
                 <div className="topbar-inner">
-                    <button onClick={() => navigate(-1)} style={{ background: 'none', color: 'var(--gray-700)', fontSize: '1.2rem' }}>←</button>
-                    <div className="topbar-title">Checkout</div>
+                    <button onClick={() => navigate(-1)} style={{ background: 'none', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: 'bold' }}>←</button>
+                    <div className="topbar-title">📋 Checkout Pesanan</div>
                     <div style={{ width: '32px' }} />
                 </div>
             </div>
 
-            <div className="container" style={{ paddingTop: '16px', paddingBottom: '100px' }}>
+            <div className="container" style={{ paddingBottom: '120px' }}>
                 {error && <div className="error-box">{error}</div>}
 
                 {/* Order Summary */}
-                <div className="card" style={{ marginBottom: '16px' }}>
-                    <div style={{ padding: '16px', borderBottom: '1px solid var(--gray-100)', fontWeight: '700' }}>Ringkasan Pesanan</div>
+                <div className="card" style={{ marginBottom: '20px', padding: '20px' }}>
+                    <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '14px', borderBottom: '1px solid var(--border-light)', paddingBottom: '10px' }}>
+                        Ringkasan Pesanan
+                    </div>
                     {cart.map(item => (
-                        <div key={item.menu_id} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', borderBottom: '1px solid var(--gray-50)' }}>
-                            <span>{item.name} × {item.quantity}</span>
-                            <span style={{ fontWeight: '600' }}>Rp {(item.price * item.quantity).toLocaleString('id-ID')}</span>
+                        <div key={item.menu_id} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px dashed var(--border-light)' }}>
+                            <div>
+                                <span style={{ fontWeight: 600 }}>{item.name}</span>
+                                <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginLeft: '6px' }}>× {item.quantity}</span>
+                                {item.note && <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontStyle: 'italic' }}>"{item.note}"</div>}
+                            </div>
+                            <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>Rp {(item.price * item.quantity).toLocaleString('id-ID')}</span>
                         </div>
                     ))}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '14px 16px', fontWeight: '700', fontSize: '1.05rem' }}>
-                        <span>Total</span>
-                        <span style={{ color: 'var(--brand)' }}>Rp {total.toLocaleString('id-ID')}</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '16px', fontWeight: 700, fontSize: '1.1rem' }}>
+                        <span>Total Biaya</span>
+                        <span style={{ color: 'var(--accent-green)' }}>Rp {total.toLocaleString('id-ID')}</span>
                     </div>
                 </div>
 
-                {/* Customer Name (optional) */}
-                <div className="form-group">
-                    <label className="form-label">Nama (opsional)</label>
-                    <input className="form-input" placeholder="Nama Anda" value={customerName} onChange={e => setCustomerName(e.target.value)} />
-                </div>
-                <div className="form-group">
-                    <label className="form-label">Catatan Pesanan (opsional)</label>
-                    <textarea className="form-input" rows={2} placeholder="Catatan umum untuk pesanan ini..." value={notes} onChange={e => setNotes(e.target.value)} />
+                {/* Customer Details */}
+                <div className="card" style={{ marginBottom: '20px', padding: '20px' }}>
+                    <div className="form-group">
+                        <label className="form-label">Nama Pemesan (opsional)</label>
+                        <input className="form-input" placeholder="Masukkan nama Anda..." value={customerName} onChange={e => setCustomerName(e.target.value)} />
+                    </div>
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                        <label className="form-label">Catatan Tambahan (opsional)</label>
+                        <textarea className="form-input" rows={2} placeholder="Catatan untuk pelayan/dapur..." value={notes} onChange={e => setNotes(e.target.value)} />
+                    </div>
                 </div>
 
                 {/* Bank Info */}
                 {bankAccount && (
-                    <div className="card" style={{ padding: '16px', marginBottom: '16px', background: 'var(--brand-light)' }}>
-                        <div style={{ fontWeight: '700', marginBottom: '10px', color: 'var(--brand)' }}>💳 Informasi Pembayaran Transfer</div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                            <span style={{ color: 'var(--gray-500)', fontSize: '0.85rem' }}>Bank</span>
-                            <span style={{ fontWeight: '600' }}>{bankAccount.bank_name}</span>
+                    <div className="card" style={{ padding: '20px', marginBottom: '20px', backgroundColor: 'var(--accent-green-light)', border: '1px solid #C4ECCE' }}>
+                        <div style={{ fontWeight: 700, marginBottom: '12px', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            💳 Rekening Pembayaran Transfer
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                            <span style={{ color: 'var(--gray-500)', fontSize: '0.85rem' }}>No. Rekening</span>
-                            <span style={{ fontWeight: '700', fontSize: '1rem' }}>{bankAccount.account_number}</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.88rem' }}>
+                            <span style={{ color: 'var(--text-secondary)' }}>Bank Target</span>
+                            <span style={{ fontWeight: 700, color: 'var(--primary)' }}>{bankAccount.bank_name}</span>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ color: 'var(--gray-500)', fontSize: '0.85rem' }}>Atas Nama</span>
-                            <span style={{ fontWeight: '600' }}>{bankAccount.account_holder}</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.88rem' }}>
+                            <span style={{ color: 'var(--text-secondary)' }}>Nomor Rekening</span>
+                            <span style={{ fontWeight: 700, fontSize: '1.05rem', letterSpacing: '1px', color: 'var(--primary)' }}>{bankAccount.account_number}</span>
                         </div>
-                        <div style={{ marginTop: '12px', borderTop: '1px solid rgba(255,107,43,0.2)', paddingTop: '10px' }}>
-                            <div style={{ color: 'var(--gray-500)', fontSize: '0.8rem' }}>Jumlah Transfer</div>
-                            <div style={{ fontWeight: '700', fontSize: '1.3rem', color: 'var(--brand)' }}>Rp {total.toLocaleString('id-ID')}</div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.88rem' }}>
+                            <span style={{ color: 'var(--text-secondary)' }}>Atas Nama</span>
+                            <span style={{ fontWeight: 600, color: 'var(--primary)' }}>{bankAccount.account_holder}</span>
                         </div>
                     </div>
                 )}
             </div>
 
-            <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: 'white', padding: '16px', boxShadow: '0 -4px 20px rgba(0,0,0,0.1)', maxWidth: '480px', margin: '0 auto' }}>
-                <button className="btn btn-primary btn-lg" onClick={handleConfirm} disabled={loading}>
-                    {loading ? '⏳ Membuat Pesanan...' : '✅ Konfirmasi & Buat Pesanan'}
+            <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, backgroundColor: 'var(--bg-surface)', padding: '18px 20px', borderTop: '1px solid var(--border)', boxShadow: 'var(--shadow-lg)', maxWidth: '520px', margin: '0 auto', borderTopLeftRadius: 'var(--radius-xl)', borderTopRightRadius: 'var(--radius-xl)' }}>
+                <button className="btn btn-secondary btn-lg" onClick={handleConfirm} disabled={loading}>
+                    {loading ? '⏳ Membuat Pesanan...' : '✅ Konfirmasi & Kirim Pesanan'}
                 </button>
             </div>
         </div>

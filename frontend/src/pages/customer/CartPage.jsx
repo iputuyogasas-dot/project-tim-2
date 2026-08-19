@@ -26,58 +26,58 @@ export default function CartPage() {
     const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
 
     if (!session) return (
-        <div className="container" style={{ paddingTop: '40px', textAlign: 'center' }}>
-            <p>Sesi tidak valid. Silakan scan ulang QR Code.</p>
-            <button className="btn btn-primary mt-3" onClick={() => navigate('/')}>Kembali</button>
+        <div className="container" style={{ paddingTop: '60px', textAlign: 'center' }}>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>Sesi meja tidak terdeteksi. Silakan scan QR Code kembali.</p>
+            <button className="btn btn-primary" onClick={() => navigate('/')}>Kembali ke Beranda</button>
         </div>
     );
 
     return (
-        <div style={{ minHeight: '100vh', background: 'var(--gray-50)' }}>
+        <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-page)' }}>
             <div className="topbar">
                 <div className="topbar-inner">
-                    <button onClick={() => navigate(-1)} style={{ background: 'none', color: 'var(--gray-700)', fontSize: '1.2rem' }}>←</button>
-                    <div className="topbar-title">Keranjang Pesanan</div>
+                    <button onClick={() => navigate(-1)} style={{ background: 'none', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: 'bold' }}>←</button>
+                    <div className="topbar-title">🛒 Keranjang Pesanan</div>
                     <div style={{ width: '32px' }} />
                 </div>
             </div>
 
-            <div className="container" style={{ paddingTop: '16px', paddingBottom: '140px' }}>
+            <div className="container" style={{ paddingBottom: '160px' }}>
                 {cart.length === 0 ? (
-                    <div className="empty-state" style={{ paddingTop: '60px' }}>
+                    <div className="empty-state">
                         <div className="empty-state-icon">🛒</div>
-                        <p>Keranjang kosong.</p>
-                        <button className="btn btn-primary mt-3" onClick={() => navigate(-1)}>Tambah Menu</button>
+                        <p>Keranjang pesanan Anda masih kosong.</p>
+                        <button className="btn btn-primary mt-3" onClick={() => navigate(-1)}>Lihat Menu</button>
                     </div>
                 ) : (
                     cart.map(item => (
-                        <div key={item.menu_id} className="card" style={{ marginBottom: '12px', padding: '14px' }}>
-                            <div style={{ display: 'flex', gap: '12px', marginBottom: '10px' }}>
+                        <div key={item.menu_id} className="card" style={{ marginBottom: '14px', padding: '16px' }}>
+                            <div style={{ display: 'flex', gap: '14px', marginBottom: '12px' }}>
                                 {item.image_url
-                                    ? <img src={item.image_url} alt={item.name} style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }} />
-                                    : <div style={{ width: '60px', height: '60px', background: 'var(--gray-100)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>🍽️</div>
+                                    ? <img src={item.image_url} alt={item.name} style={{ width: '64px', height: '64px', objectFit: 'cover', borderRadius: 'var(--radius-lg)' }} />
+                                    : <div style={{ width: '64px', height: '64px', backgroundColor: 'var(--bg-surface-muted)', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.8rem' }}>🍽️</div>
                                 }
                                 <div style={{ flex: 1 }}>
-                                    <div style={{ fontWeight: '600', marginBottom: '4px' }}>{item.name}</div>
-                                    <div style={{ color: 'var(--brand)', fontWeight: '700' }}>Rp {Number(item.price).toLocaleString('id-ID')}</div>
+                                    <div style={{ fontWeight: '600', fontSize: '0.92rem', color: 'var(--text-primary)', marginBottom: '4px' }}>{item.name}</div>
+                                    <div style={{ color: 'var(--accent-green)', fontWeight: '700', fontSize: '0.95rem' }}>Rp {Number(item.price).toLocaleString('id-ID')}</div>
                                 </div>
-                                <button onClick={() => removeItem(item.menu_id)} style={{ background: 'none', color: 'var(--danger)', fontSize: '1.2rem', alignSelf: 'flex-start' }}>🗑</button>
+                                <button onClick={() => removeItem(item.menu_id)} style={{ background: 'none', color: 'var(--accent-red)', fontSize: '1.2rem', padding: '4px' }}>🗑</button>
                             </div>
 
-                            {/* Qty control */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
-                                <button className="btn btn-outline btn-sm" onClick={() => changeQty(item.menu_id, -1)}>−</button>
-                                <span style={{ fontWeight: '600', minWidth: '24px', textAlign: 'center' }}>{item.quantity}</span>
-                                <button className="btn btn-primary btn-sm" onClick={() => changeQty(item.menu_id, 1)}>+</button>
-                                <span style={{ marginLeft: 'auto', fontWeight: '700' }}>Rp {(item.price * item.quantity).toLocaleString('id-ID')}</span>
+                            {/* Qty control stepper per style.json */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px', backgroundColor: 'var(--bg-surface-muted)', padding: '6px 14px', borderRadius: 'var(--radius-full)' }}>
+                                <button className="btn btn-outline btn-sm" style={{ width: '28px', height: '28px', padding: 0, borderRadius: '50%' }} onClick={() => changeQty(item.menu_id, -1)}>−</button>
+                                <span style={{ fontWeight: '700', minWidth: '24px', textAlign: 'center' }}>{item.quantity}</span>
+                                <button className="btn btn-primary btn-sm" style={{ width: '28px', height: '28px', padding: 0, borderRadius: '50%' }} onClick={() => changeQty(item.menu_id, 1)}>+</button>
+                                <span style={{ marginLeft: 'auto', fontWeight: '700', color: 'var(--accent-green)' }}>Rp {(item.price * item.quantity).toLocaleString('id-ID')}</span>
                             </div>
 
                             <input
                                 className="form-input"
-                                placeholder="Catatan (misal: tidak pedas)"
+                                placeholder="✏️ Catatan khusus (misal: ekstra pedas, es dikit)..."
                                 value={item.note}
                                 onChange={e => updateNote(item.menu_id, e.target.value)}
-                                style={{ fontSize: '0.82rem' }}
+                                style={{ fontSize: '0.82rem', padding: '8px 16px' }}
                             />
                         </div>
                     ))
@@ -85,10 +85,10 @@ export default function CartPage() {
             </div>
 
             {cart.length > 0 && (
-                <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: 'white', padding: '16px', boxShadow: '0 -4px 20px rgba(0,0,0,0.1)', maxWidth: '480px', margin: '0 auto' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                        <span style={{ fontWeight: '600' }}>Total Pesanan</span>
-                        <span style={{ fontWeight: '700', fontSize: '1.1rem', color: 'var(--brand)' }}>Rp {total.toLocaleString('id-ID')}</span>
+                <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, backgroundColor: 'var(--bg-surface)', padding: '18px 20px', borderTop: '1px solid var(--border)', boxShadow: 'var(--shadow-lg)', maxWidth: '520px', margin: '0 auto', borderTopLeftRadius: 'var(--radius-xl)', borderTopRightRadius: 'var(--radius-xl)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '14px', alignItems: 'center' }}>
+                        <span style={{ fontWeight: '600', color: 'var(--text-secondary)' }}>Total Pembayaran</span>
+                        <span style={{ fontWeight: '700', fontSize: '1.25rem', color: 'var(--accent-green)' }}>Rp {total.toLocaleString('id-ID')}</span>
                     </div>
                     <button className="btn btn-primary btn-lg" onClick={() => navigate('/checkout')}>Lanjut ke Checkout →</button>
                 </div>

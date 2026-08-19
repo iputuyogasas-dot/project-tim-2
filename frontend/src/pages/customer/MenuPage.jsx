@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import api from '../../api';
 
-const CartContext = React.createContext(null);
-export const useCart = () => React.useContext(CartContext);
-
 const SESSION_KEY = 'table_session';
+const PASTEL_COLORS = ['#F7D9C4', '#F4E6C1', '#CDEBF7', '#E8D9F3', '#FBD9E4', '#FADFC0', '#D7EFD1'];
 
 export default function MenuPage() {
     const [searchParams] = useSearchParams();
@@ -25,7 +23,7 @@ export default function MenuPage() {
         const tableId = searchParams.get('table');
         const token = searchParams.get('token');
         if (!tableId || !token) {
-            setError('Link tidak valid. Harap scan ulang QR Code meja Anda.');
+            setError('Link QR Code tidak valid. Silakan scan QR Meja Anda.');
             setLoading(false);
             return;
         }
@@ -35,7 +33,7 @@ export default function MenuPage() {
                 setTableData(res.data.data);
                 sessionStorage.setItem(SESSION_KEY, JSON.stringify({ table_id: tableId, token }));
             } catch {
-                setError('Meja tidak ditemukan atau tidak aktif. Harap scan ulang QR Code.');
+                setError('Meja tidak ditemukan atau tidak aktif.');
             } finally { setLoading(false); }
         };
         verify();
@@ -49,7 +47,8 @@ export default function MenuPage() {
 
     useEffect(() => { sessionStorage.setItem('cart', JSON.stringify(cart)); }, [cart]);
 
-    const addToCart = (menu) => {
+    const addToCart = (menu, e) => {
+        if (e) e.stopPropagation();
         setCart(prev => {
             const existing = prev.find(i => i.menu_id === menu.id);
             if (existing) return prev.map(i => i.menu_id === menu.id ? { ...i, quantity: i.quantity + 1 } : i);
@@ -65,69 +64,132 @@ export default function MenuPage() {
         return matchCat && matchSearch;
     });
 
-    if (loading) return <div className="loading">⏳ Memverifikasi meja...</div>;
+    if (loading) return <div className="loading">⏳ Memverifikasi Meja Anda...</div>;
     if (error) return (
-        <div className="container" style={{ paddingTop: '40px', textAlign: 'center' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🚫</div>
-            <h2 style={{ color: 'var(--danger)', marginBottom: '8px' }}>Link Tidak Valid</h2>
-            <p style={{ color: 'var(--gray-500)' }}>{error}</p>
+        <div className="container" style={{ paddingTop: '60px', textAlign: 'center' }}>
+            <div style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🚫</div>
+            <h2 style={{ color: 'var(--accent-red)', marginBottom: '8px', fontWeight: 700 }}>Akses Ditolak</h2>
+            <p style={{ color: 'var(--text-secondary)' }}>{error}</p>
         </div>
     );
 
     return (
-        <div style={{ minHeight: '100vh', background: 'var(--gray-50)' }}>
+        <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-page)', paddingBottom: '90px' }}>
+            {/* Topbar Pill */}
             <div className="topbar">
                 <div className="topbar-inner">
                     <div>
-                        <div className="topbar-title">🍽️ Menu Restoran</div>
-                        <div className="topbar-table">Meja {tableData?.table_number}</div>
+                        <div className="topbar-title">🍃 Resto Food & Drink</div>
+                        <div className="topbar-table">📍 Meja Nomor {tableData?.table_number}</div>
                     </div>
                     {cartCount > 0 && (
                         <button className="cart-btn" onClick={() => navigate('/cart')}>
-                            🛒 Keranjang <span className="cart-count">{cartCount}</span>
+                            🛒 <span className="cart-count">{cartCount}</span>
                         </button>
                     )}
                 </div>
             </div>
 
             <div className="container">
-                {/* Search */}
-                <div style={{ marginTop: '16px', marginBottom: '12px' }}>
-                    <input className="form-input" placeholder="🔍 Cari menu..." value={search} onChange={e => setSearch(e.target.value)} />
+                {/* Banner Promo per style.json */}
+                <div className="promo-banner">
+                    <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.85, fontWeight: 600 }}>Spesial Meja #{tableData?.table_number}</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, margin: '4px 0' }}>Pesan Makanan Praktis & Cepat</div>
+                    <div style={{ fontSize: '0.82rem', opacity: 0.9 }}>Pilih menu favorit Anda dan langsung pesan dari meja.</div>
                 </div>
 
-                {/* Category Filter */}
-                <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '8px', marginBottom: '16px' }}>
-                    <button className={`btn btn-sm ${!activeCategory ? 'btn-primary' : 'btn-outline'}`} onClick={() => setActiveCategory(null)}>Semua</button>
-                    {categories.map(c => (
-                        <button key={c.id} className={`btn btn-sm ${activeCategory === c.id ? 'btn-primary' : 'btn-outline'}`} onClick={() => setActiveCategory(c.id)}>
-                            {c.name}
-                        </button>
-                    ))}
+                {/* Search Bar (Pill Input per style.json) */}
+                <div className="form-group" style={{ marginBottom: '16px' }}>
+                    <input
+                        className="form-input"
+                        placeholder="🔍 Cari makanan, minuman, atau snack..."
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
+                    />
                 </div>
 
-                {/* Menu Grid */}
+                {/* Category Pills (Pastel Backgrounds per style.json) */}
+                <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '8px', marginBottom: '20px', scrollbarWidth: 'none' }}>
+                    <button
+                        className={`cat-pill ${!activeCategory ? 'active' : ''}`}
+                        style={{ backgroundColor: !activeCategory ? 'var(--primary)' : 'var(--bg-surface)', color: !activeCategory ? '#FFF' : 'var(--text-primary)' }}
+                        onClick={() => setActiveCategory(null)}
+                    >
+                        🍽️ Semua
+                    </button>
+                    {categories.map((c, idx) => {
+                        const pastelBg = PASTEL_COLORS[idx % PASTEL_COLORS.length];
+                        const isActive = activeCategory === c.id;
+                        return (
+                            <button
+                                key={c.id}
+                                className={`cat-pill ${isActive ? 'active' : ''}`}
+                                style={{
+                                    backgroundColor: isActive ? 'var(--primary)' : pastelBg,
+                                    color: isActive ? '#FFF' : 'var(--text-primary)'
+                                }}
+                                onClick={() => setActiveCategory(c.id)}
+                            >
+                                {c.name}
+                            </button>
+                        );
+                    })}
+                </div>
+
+                {/* Product Grid per style.json */}
                 {filteredMenus.length === 0 ? (
-                    <div className="empty-state"><div className="empty-state-icon">🍽️</div><p>Tidak ada menu ditemukan.</p></div>
+                    <div className="empty-state">
+                        <div className="empty-state-icon">🥗</div>
+                        <p>Menu tidak ditemukan</p>
+                    </div>
                 ) : (
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', paddingBottom: '32px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                         {filteredMenus.map(menu => {
                             const inCart = cart.find(i => i.menu_id === menu.id);
                             return (
-                                <div key={menu.id} className="card" style={{ cursor: 'pointer' }}>
-                                    {menu.image_url
-                                        ? <img src={menu.image_url} alt={menu.name} style={{ width: '100%', height: '130px', objectFit: 'cover' }} />
-                                        : <div style={{ height: '130px', background: 'var(--gray-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem' }}>🍽️</div>
-                                    }
-                                    <div style={{ padding: '12px' }}>
-                                        <div style={{ fontWeight: '600', fontSize: '0.88rem', marginBottom: '4px', lineHeight: 1.3 }}>{menu.name}</div>
-                                        {menu.description && <div style={{ fontSize: '0.75rem', color: 'var(--gray-500)', marginBottom: '8px' }}>{menu.description}</div>}
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <span style={{ fontWeight: '700', color: 'var(--brand)' }}>Rp {Number(menu.price).toLocaleString('id-ID')}</span>
-                                            <button className="btn btn-primary btn-sm" onClick={() => addToCart(menu)}>
-                                                {inCart ? `+${inCart.quantity}` : '+ Tambah'}
+                                <div key={menu.id} className="card" style={{ padding: '14px', position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                                    <div>
+                                        {/* Product Image */}
+                                        <div style={{ position: 'relative', marginBottom: '10px' }}>
+                                            {menu.image_url ? (
+                                                <img
+                                                    src={menu.image_url}
+                                                    alt={menu.name}
+                                                    style={{ width: '100%', height: '125px', objectFit: 'cover', borderRadius: 'var(--radius-lg)' }}
+                                                />
+                                            ) : (
+                                                <div style={{ height: '125px', backgroundColor: 'var(--bg-surface-muted)', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.2rem' }}>
+                                                    🍱
+                                                </div>
+                                            )}
+                                            {/* Add Circle Button Overlap per style.json productCard */}
+                                            <button
+                                                className="btn-icon-circle"
+                                                style={{ position: 'absolute', bottom: '-10px', right: '8px', boxShadow: 'var(--shadow-md)' }}
+                                                onClick={(e) => addToCart(menu, e)}
+                                                title="Tambah ke keranjang"
+                                            >
+                                                {inCart ? `${inCart.quantity}` : '+'}
                                             </button>
                                         </div>
+
+                                        {/* Product Name */}
+                                        <div style={{ fontWeight: 600, fontSize: '0.88rem', color: 'var(--text-primary)', marginBottom: '4px', lineHeight: 1.3 }}>
+                                            {menu.name}
+                                        </div>
+                                        {/* Description */}
+                                        {menu.description && (
+                                            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                                {menu.description}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Price Text per style.json (vibrant green #33A852) */}
+                                    <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <span style={{ fontWeight: 700, color: 'var(--accent-green)', fontSize: '0.95rem' }}>
+                                            Rp {Number(menu.price).toLocaleString('id-ID')}
+                                        </span>
                                     </div>
                                 </div>
                             );
@@ -136,9 +198,10 @@ export default function MenuPage() {
                 )}
             </div>
 
+            {/* Bottom Floating Bar */}
             {cartCount > 0 && (
-                <div style={{ position: 'fixed', bottom: '16px', left: '50%', transform: 'translateX(-50%)', width: 'calc(100% - 32px)', maxWidth: '448px', zIndex: 200 }}>
-                    <button className="btn btn-primary btn-lg" onClick={() => navigate('/cart')}>
+                <div style={{ position: 'fixed', bottom: '16px', left: '50%', transform: 'translateX(-50%)', width: 'calc(100% - 32px)', maxWidth: '480px', zIndex: 200 }}>
+                    <button className="btn btn-secondary btn-lg" style={{ boxShadow: 'var(--shadow-md)' }} onClick={() => navigate('/cart')}>
                         🛒 Lihat Keranjang ({cartCount} item)
                     </button>
                 </div>

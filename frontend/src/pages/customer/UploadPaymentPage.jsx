@@ -38,25 +38,27 @@ export default function UploadPaymentPage() {
 
     if (success) return (
         <div className="container" style={{ paddingTop: '60px', textAlign: 'center' }}>
-            <div style={{ fontSize: '4rem', marginBottom: '16px' }}>✅</div>
-            <h2 style={{ marginBottom: '8px' }}>Bukti Berhasil Dikirim!</h2>
-            <p style={{ color: 'var(--gray-500)', marginBottom: '24px' }}>Admin akan memverifikasi pembayaran Anda segera. Pantau status pesanan di bawah ini.</p>
+            <div style={{ fontSize: '4rem', marginBottom: '16px' }}>🎉</div>
+            <h2 style={{ marginBottom: '8px', color: 'var(--primary)', fontWeight: 700 }}>Bukti Berhasil Dikirim!</h2>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: 1.5 }}>
+                Kasir/Admin akan memverifikasi pembayaran Anda segera. Anda dapat memantau proses pesanan secara langsung.
+            </p>
             <button className="btn btn-primary btn-lg" onClick={() => navigate(`/status/${orderId}`)}>Pantau Status Pesanan →</button>
         </div>
     );
 
     return (
-        <div style={{ minHeight: '100vh', background: 'var(--gray-50)' }}>
+        <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-page)' }}>
             <div className="topbar">
                 <div className="topbar-inner">
-                    <div className="topbar-title">Upload Bukti Bayar</div>
+                    <div className="topbar-title">📤 Upload Bukti Bayar</div>
                 </div>
             </div>
 
-            <div className="container" style={{ paddingTop: '24px' }}>
-                <div className="card" style={{ padding: '20px' }}>
-                    <p style={{ color: 'var(--gray-500)', marginBottom: '20px', fontSize: '0.9rem', lineHeight: 1.6 }}>
-                        Silakan upload screenshot atau foto bukti transfer Anda. Pastikan nominal dan nama rekening terlihat jelas.
+            <div className="container" style={{ paddingTop: '16px' }}>
+                <div className="card" style={{ padding: '24px' }}>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '20px', fontSize: '0.88rem', lineHeight: 1.6 }}>
+                        Upload screenshot atau foto resi transfer bank Anda. Pastikan nominal & nama pemilik rekening terlihat jelas.
                     </p>
 
                     {error && <div className="error-box">{error}</div>}
@@ -64,20 +66,27 @@ export default function UploadPaymentPage() {
                     <div
                         onClick={() => document.getElementById('proof-input').click()}
                         style={{
-                            border: '2px dashed var(--gray-300)', borderRadius: 'var(--radius)', padding: '40px 20px',
-                            textAlign: 'center', cursor: 'pointer', marginBottom: '16px',
-                            background: preview ? 'none' : 'var(--gray-50)',
+                            border: '2px dashed var(--border)', borderRadius: 'var(--radius-xl)', padding: '36px 20px',
+                            textAlign: 'center', cursor: 'pointer', marginBottom: '20px',
+                            backgroundColor: preview ? 'transparent' : 'var(--bg-surface-muted)',
+                            transition: 'all 0.2s ease'
                         }}
                     >
                         {preview
-                            ? <img src={preview} alt="Preview" style={{ maxHeight: '300px', borderRadius: '8px', margin: '0 auto' }} />
-                            : <><div style={{ fontSize: '2.5rem', marginBottom: '8px' }}>📷</div><p style={{ color: 'var(--gray-500)', fontSize: '0.9rem' }}>Klik untuk pilih file gambar</p><p style={{ color: 'var(--gray-300)', fontSize: '0.75rem' }}>JPG, PNG, WEBP - Max 5MB</p></>
+                            ? <img src={preview} alt="Preview Bukti" style={{ maxHeight: '280px', borderRadius: 'var(--radius-md)', margin: '0 auto' }} />
+                            : (
+                                <>
+                                    <div style={{ fontSize: '3rem', marginBottom: '10px' }}>📷</div>
+                                    <p style={{ color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.92rem' }}>Klik di sini untuk memilih gambar</p>
+                                    <p style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '4px' }}>Format JPG, PNG, WEBP (Maksimal 5MB)</p>
+                                </>
+                            )
                         }
                     </div>
                     <input id="proof-input" type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFile} />
 
-                    <button className="btn btn-primary btn-lg" onClick={handleUpload} disabled={loading || !file}>
-                        {loading ? '⏳ Mengirim...' : '📤 Upload Bukti Pembayaran'}
+                    <button className="btn btn-secondary btn-lg" onClick={handleUpload} disabled={loading || !file}>
+                        {loading ? '⏳ Mengirim...' : '📤 Kirim Bukti Pembayaran'}
                     </button>
                 </div>
             </div>

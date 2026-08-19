@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Plus, Edit2, Trash2, Utensils, CheckCircle2, XCircle } from 'lucide-react';
 import api from '../../api';
 
 export default function MenuManagePage() {
@@ -49,35 +50,44 @@ export default function MenuManagePage() {
     return (
         <div>
             <div className="admin-header">
-                <span>🍽️ Kelola Menu</span>
-                <button className="btn btn-primary btn-sm" onClick={openAdd}>+ Tambah Menu</button>
+                <span>Kelola Menu</span>
+                <button className="btn btn-primary btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={openAdd}>
+                    <Plus size={16} /> Tambah Menu
+                </button>
             </div>
-            <div className="page-content">
+            <div>
                 {msg && <div className="success-box">{msg}</div>}
                 <div className="card">
-                    {loading ? <div className="loading">Memuat...</div> : (
+                    {loading ? <div className="loading">Memuat menu...</div> : (
                         <table className="data-table">
                             <thead><tr><th>Menu</th><th>Kategori</th><th>Harga</th><th>Status</th><th>Aksi</th></tr></thead>
                             <tbody>
                                 {menus.map(m => (
                                     <tr key={m.id}>
                                         <td>
-                                            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                                {m.image_url ? <img src={m.image_url} alt={m.name} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '6px' }} /> : <div style={{ width: '40px', height: '40px', background: 'var(--gray-100)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>🍽️</div>}
+                                            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                                                {m.image_url
+                                                    ? <img src={m.image_url} alt={m.name} style={{ width: '42px', height: '42px', objectFit: 'cover', borderRadius: '8px' }} />
+                                                    : (
+                                                        <div style={{ width: '42px', height: '42px', backgroundColor: 'var(--bg-surface-muted)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
+                                                            <Utensils size={20} />
+                                                        </div>
+                                                    )
+                                                }
                                                 <strong>{m.name}</strong>
                                             </div>
                                         </td>
                                         <td>{m.category_name}</td>
                                         <td>Rp {Number(m.price).toLocaleString('id-ID')}</td>
                                         <td>
-                                            <button className={`btn btn-sm ${m.is_available ? 'btn-success' : 'btn-outline'}`} onClick={() => toggleAvailable(m)}>
-                                                {m.is_available ? '✅ Tersedia' : '❌ Habis'}
+                                            <button className={`btn btn-sm ${m.is_available ? 'btn-secondary' : 'btn-outline'}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }} onClick={() => toggleAvailable(m)}>
+                                                {m.is_available ? <><CheckCircle2 size={14} /> Tersedia</> : <><XCircle size={14} /> Habis</>}
                                             </button>
                                         </td>
                                         <td>
                                             <div style={{ display: 'flex', gap: '8px' }}>
-                                                <button className="btn btn-outline btn-sm" onClick={() => openEdit(m)}>Edit</button>
-                                                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(m.id, m.name)}>Hapus</button>
+                                                <button className="btn btn-outline btn-sm" onClick={() => openEdit(m)}><Edit2 size={14} /></button>
+                                                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(m.id, m.name)}><Trash2 size={14} /></button>
                                             </div>
                                         </td>
                                     </tr>

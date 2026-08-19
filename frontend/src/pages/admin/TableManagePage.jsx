@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Plus, Download, Edit2, Trash2 } from 'lucide-react';
 import api from '../../api';
 
 export default function TableManagePage() {
@@ -45,28 +46,32 @@ export default function TableManagePage() {
     return (
         <div>
             <div className="admin-header">
-                <span>📱 Kelola Meja & QR Code</span>
-                <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setError(''); setMsg(''); }}>+ Tambah Meja</button>
+                <span>Kelola Meja & QR Code</span>
+                <button className="btn btn-primary btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={() => { setShowModal(true); setError(''); setMsg(''); }}>
+                    <Plus size={16} /> Tambah Meja
+                </button>
             </div>
-            <div className="page-content">
+            <div>
                 {msg && <div className="success-box">{msg}</div>}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
-                    {loading ? <div className="loading">Memuat...</div> : tables.map(t => (
+                    {loading ? <div className="loading">Memuat meja...</div> : tables.map(t => (
                         <div key={t.id} className="card" style={{ padding: '16px' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                                <div style={{ fontWeight: '700', fontSize: '1rem' }}>Meja {t.table_number}</div>
+                                <div style={{ fontWeight: 700, fontSize: '1rem' }}>Meja {t.table_number}</div>
                                 <span className={`badge ${t.status === 'active' ? 'badge-confirmed' : 'badge-cancelled'}`}>{t.status}</span>
                             </div>
                             {t.qr_code_url && (
                                 <div style={{ textAlign: 'center', marginBottom: '12px' }}>
-                                    <img src={`${BACKEND}${t.qr_code_url}`} alt={`QR Meja ${t.table_number}`} style={{ width: '140px', height: '140px', margin: '0 auto', border: '1px solid var(--gray-200)', borderRadius: '8px', padding: '4px' }} />
-                                    <a href={`${BACKEND}${t.qr_code_url}`} download={`qr-meja-${t.table_number}.png`} className="btn btn-outline btn-sm" style={{ marginTop: '8px', display: 'inline-block' }}>⬇ Download QR</a>
+                                    <img src={`${BACKEND}${t.qr_code_url}`} alt={`QR Meja ${t.table_number}`} style={{ width: '140px', height: '140px', margin: '0 auto', border: '1px solid var(--border-light)', borderRadius: '8px', padding: '4px' }} />
+                                    <a href={`${BACKEND}${t.qr_code_url}`} download={`qr-meja-${t.table_number}.png`} className="btn btn-outline btn-sm" style={{ marginTop: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                                        <Download size={14} /> Download QR
+                                    </a>
                                 </div>
                             )}
                             <div style={{ display: 'flex', gap: '8px' }}>
-                                <button className="btn btn-outline btn-sm" style={{ flex: 1 }}
-                                    onClick={() => { setEditing(t); setEditForm({ table_number: t.table_number, status: t.status }); setError(''); }}>Edit</button>
-                                <button className="btn btn-danger btn-sm" style={{ flex: 1 }} onClick={() => handleDelete(t.id, t.table_number)}>Hapus</button>
+                                <button className="btn btn-outline btn-sm" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                    onClick={() => { setEditing(t); setEditForm({ table_number: t.table_number, status: t.status }); setError(''); }}><Edit2 size={14} /></button>
+                                <button className="btn btn-danger btn-sm" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => handleDelete(t.id, t.table_number)}><Trash2 size={14} /></button>
                             </div>
                         </div>
                     ))}
@@ -78,7 +83,7 @@ export default function TableManagePage() {
                 <div className="modal-overlay" onClick={() => setShowModal(false)}>
                     <div className="modal" onClick={e => e.stopPropagation()}>
                         <div className="modal-title">Tambah Meja Baru</div>
-                        <p style={{ color: 'var(--gray-500)', fontSize: '0.85rem', marginBottom: '16px' }}>QR Code akan otomatis digenerate setelah meja ditambahkan.</p>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '16px' }}>QR Code akan otomatis digenerate setelah meja ditambahkan.</p>
                         {error && <div className="error-box">{error}</div>}
                         <div className="form-group">
                             <label className="form-label">Nomor Meja</label>

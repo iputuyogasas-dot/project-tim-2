@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, CreditCard, Check } from 'lucide-react';
 import api from '../../api';
 
 export default function CheckoutPage() {
@@ -49,8 +50,10 @@ export default function CheckoutPage() {
         <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-page)' }}>
             <div className="topbar">
                 <div className="topbar-inner">
-                    <button onClick={() => navigate(-1)} style={{ background: 'none', color: 'var(--text-primary)', fontSize: '1.2rem', fontWeight: 'bold' }}>←</button>
-                    <div className="topbar-title">📋 Checkout Pesanan</div>
+                    <button onClick={() => navigate(-1)} style={{ background: 'none', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <ArrowLeft size={20} />
+                    </button>
+                    <div className="topbar-title">Checkout Pesanan</div>
                     <div style={{ width: '32px' }} />
                 </div>
             </div>
@@ -95,7 +98,10 @@ export default function CheckoutPage() {
                 {bankAccount && (
                     <div className="card" style={{ padding: '20px', marginBottom: '20px', backgroundColor: 'var(--accent-green-light)', border: '1px solid #C4ECCE' }}>
                         <div style={{ fontWeight: 700, marginBottom: '12px', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            💳 Rekening Pembayaran Transfer
+                            <div style={{ width: '28px', height: '28px', backgroundColor: '#FFF', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <CreditCard size={18} color="var(--primary)" />
+                            </div>
+                            Rekening Pembayaran Transfer
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.88rem' }}>
                             <span style={{ color: 'var(--text-secondary)' }}>Bank Target</span>
@@ -114,8 +120,8 @@ export default function CheckoutPage() {
             </div>
 
             <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, backgroundColor: 'var(--bg-surface)', padding: '18px 20px', borderTop: '1px solid var(--border)', boxShadow: 'var(--shadow-lg)', maxWidth: '520px', margin: '0 auto', borderTopLeftRadius: 'var(--radius-xl)', borderTopRightRadius: 'var(--radius-xl)' }}>
-                <button className="btn btn-secondary btn-lg" onClick={handleConfirm} disabled={loading}>
-                    {loading ? '⏳ Membuat Pesanan...' : '✅ Konfirmasi & Kirim Pesanan'}
+                <button className="btn btn-secondary btn-lg" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }} onClick={handleConfirm} disabled={loading}>
+                    {loading ? 'Membuat Pesanan...' : <><Check size={18} /> Konfirmasi & Kirim Pesanan</>}
                 </button>
             </div>
         </div>

@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Clock, Search, CheckCircle2, XCircle, ChefHat, Check, Ban, AlertCircle } from 'lucide-react';
 import api from '../../api';
 
 const STATUS_MAP = {
-    pending_payment: { label: 'Menunggu Pembayaran', icon: '⏳', class: 'badge-pending' },
-    waiting_verification: { label: 'Menunggu Verifikasi', icon: '🔍', class: 'badge-waiting' },
-    confirmed: { label: 'Dikonfirmasi', icon: '✅', class: 'badge-confirmed' },
-    rejected: { label: 'Ditolak', icon: '❌', class: 'badge-rejected' },
-    processing: { label: 'Sedang Diproses', icon: '👨‍🍳', class: 'badge-processing' },
-    completed: { label: 'Selesai / Diantar', icon: '🎉', class: 'badge-completed' },
-    cancelled: { label: 'Dibatalkan', icon: '🚫', class: 'badge-cancelled' },
+    pending_payment: { label: 'Menunggu Pembayaran', icon: Clock, class: 'badge-pending', iconBg: '#FFF7D6', iconColor: '#B48000' },
+    waiting_verification: { label: 'Menunggu Verifikasi', icon: Search, class: 'badge-waiting', iconBg: '#FFEDD5', iconColor: '#C2410C' },
+    confirmed: { label: 'Dikonfirmasi', icon: CheckCircle2, class: 'badge-confirmed', iconBg: '#DFF3E4', iconColor: '#1F6D32' },
+    rejected: { label: 'Ditolak', icon: XCircle, class: 'badge-rejected', iconBg: '#FDE8E8', iconColor: '#991B1B' },
+    processing: { label: 'Sedang Diproses', icon: ChefHat, class: 'badge-processing', iconBg: '#E0F2FE', iconColor: '#0369A1' },
+    completed: { label: 'Selesai / Diantar', icon: Check, class: 'badge-completed', iconBg: '#E8F0EC', iconColor: '#1F3D2B' },
+    cancelled: { label: 'Dibatalkan', icon: Ban, class: 'badge-cancelled', iconBg: '#F2F0EA', iconColor: '#6B6B6B' },
 };
 
 const STEPS = ['pending_payment', 'waiting_verification', 'confirmed', 'processing', 'completed'];
@@ -34,30 +35,36 @@ export default function OrderStatusPage() {
 
     if (error) return (
         <div className="container" style={{ paddingTop: '60px', textAlign: 'center' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '12px' }}>❓</div>
+            <div style={{ width: '64px', height: '64px', backgroundColor: 'var(--bg-surface-muted)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px auto', color: 'var(--text-muted)' }}>
+                <AlertCircle size={32} />
+            </div>
             <p style={{ color: 'var(--text-secondary)' }}>{error}</p>
         </div>
     );
 
-    if (!order) return <div className="loading">⏳ Memuat status pesanan...</div>;
+    if (!order) return <div className="loading">Memuat status pesanan...</div>;
 
-    const status = STATUS_MAP[order.status] || { label: order.status, icon: '📋', class: '' };
+    const status = STATUS_MAP[order.status] || { label: order.status, icon: Clock, class: '', iconBg: 'var(--bg-surface-muted)', iconColor: 'var(--text-primary)' };
+    const StatusIcon = status.icon;
     const currentStep = STEPS.indexOf(order.status);
 
     return (
         <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-page)' }}>
             <div className="topbar">
                 <div className="topbar-inner">
-                    <div className="topbar-title">📍 Status Pesanan #{orderId}</div>
+                    <div className="topbar-title">Status Pesanan #{orderId}</div>
                 </div>
             </div>
 
             <div className="container" style={{ paddingTop: '16px' }}>
                 <div className="card" style={{ padding: '24px', textAlign: 'center', marginBottom: '20px' }}>
-                    <div style={{ fontSize: '3.8rem', marginBottom: '12px' }}>{status.icon}</div>
+                    {/* SVG Icon Box per reference image */}
+                    <div style={{ width: '64px', height: '64px', backgroundColor: status.iconBg, borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', color: status.iconColor }}>
+                        <StatusIcon size={32} />
+                    </div>
                     <span className={`badge ${status.class}`} style={{ fontSize: '0.88rem', padding: '6px 18px' }}>{status.label}</span>
                     <p style={{ color: 'var(--text-muted)', marginTop: '14px', fontSize: '0.8rem' }}>
-                        🔄 Otomatis diperbarui setiap 5 detik
+                        Otomatis diperbarui setiap 5 detik
                     </p>
                 </div>
 
@@ -72,7 +79,7 @@ export default function OrderStatusPage() {
                                     backgroundColor: currentStep >= idx ? 'var(--primary)' : 'var(--bg-surface-muted)',
                                     color: currentStep >= idx ? '#FFF' : 'var(--text-muted)',
                                 }}>
-                                    {currentStep > idx ? '✓' : idx + 1}
+                                    {currentStep > idx ? <Check size={14} /> : idx + 1}
                                 </div>
                                 <span style={{ fontSize: '0.88rem', color: currentStep >= idx ? 'var(--text-primary)' : 'var(--text-muted)', fontWeight: currentStep === idx ? 700 : 400 }}>
                                     {STATUS_MAP[step]?.label}

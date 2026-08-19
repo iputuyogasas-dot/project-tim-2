@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Plus, Edit2, Trash2 } from 'lucide-react';
 import api from '../../api';
 
 export default function CategoryManagePage() {
@@ -42,25 +43,27 @@ export default function CategoryManagePage() {
     return (
         <div>
             <div className="admin-header">
-                <span>🏷️ Kelola Kategori</span>
-                <button className="btn btn-primary btn-sm" onClick={openAdd}>+ Tambah Kategori</button>
+                <span>Kelola Kategori</span>
+                <button className="btn btn-primary btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={openAdd}>
+                    <Plus size={16} /> Tambah Kategori
+                </button>
             </div>
-            <div className="page-content">
+            <div>
                 {msg && <div className="success-box">{msg}</div>}
                 <div className="card">
-                    {loading ? <div className="loading">Memuat...</div> : (
+                    {loading ? <div className="loading">Memuat kategori...</div> : (
                         <table className="data-table">
-                            <thead><tr><th>#</th><th>Nama</th><th>Deskripsi</th><th>Aksi</th></tr></thead>
+                            <thead><tr><th>ID</th><th>Nama</th><th>Deskripsi</th><th>Aksi</th></tr></thead>
                             <tbody>
                                 {categories.map(cat => (
                                     <tr key={cat.id}>
                                         <td>{cat.id}</td>
                                         <td><strong>{cat.name}</strong></td>
-                                        <td style={{ color: 'var(--gray-500)', fontSize: '0.85rem' }}>{cat.description || '-'}</td>
+                                        <td style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{cat.description || '-'}</td>
                                         <td>
                                             <div style={{ display: 'flex', gap: '8px' }}>
-                                                <button className="btn btn-outline btn-sm" onClick={() => openEdit(cat)}>Edit</button>
-                                                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(cat.id, cat.name)}>Hapus</button>
+                                                <button className="btn btn-outline btn-sm" onClick={() => openEdit(cat)}><Edit2 size={14} /></button>
+                                                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(cat.id, cat.name)}><Trash2 size={14} /></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -78,7 +81,7 @@ export default function CategoryManagePage() {
                         {error && <div className="error-box">{error}</div>}
                         <div className="form-group">
                             <label className="form-label">Nama Kategori</label>
-                            <input className="form-input" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Contoh: Makanan" autoFocus />
+                            <input className="form-input" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Contoh: Makanan Utama" autoFocus />
                         </div>
                         <div className="form-group">
                             <label className="form-label">Deskripsi (opsional)</label>

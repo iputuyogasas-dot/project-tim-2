@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { ShoppingBag, Search, Plus, Utensils, AlertCircle } from 'lucide-react';
 import api from '../../api';
 
 const SESSION_KEY = 'table_session';
@@ -64,10 +65,12 @@ export default function MenuPage() {
         return matchCat && matchSearch;
     });
 
-    if (loading) return <div className="loading">⏳ Memverifikasi Meja Anda...</div>;
+    if (loading) return <div className="loading">Memverifikasi Meja Anda...</div>;
     if (error) return (
         <div className="container" style={{ paddingTop: '60px', textAlign: 'center' }}>
-            <div style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🚫</div>
+            <div style={{ width: '64px', height: '64px', backgroundColor: '#FDE8E8', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', color: 'var(--accent-red)' }}>
+                <AlertCircle size={32} />
+            </div>
             <h2 style={{ color: 'var(--accent-red)', marginBottom: '8px', fontWeight: 700 }}>Akses Ditolak</h2>
             <p style={{ color: 'var(--text-secondary)' }}>{error}</p>
         </div>
@@ -78,44 +81,52 @@ export default function MenuPage() {
             {/* Topbar Pill */}
             <div className="topbar">
                 <div className="topbar-inner">
-                    <div>
-                        <div className="topbar-title">🍃 Resto Food & Drink</div>
-                        <div className="topbar-table">📍 Meja Nomor {tableData?.table_number}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ width: '36px', height: '36px', backgroundColor: 'var(--accent-green-light)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
+                            <Utensils size={20} />
+                        </div>
+                        <div>
+                            <div className="topbar-title">Resto Food & Drink</div>
+                            <div className="topbar-table">Meja Nomor {tableData?.table_number}</div>
+                        </div>
                     </div>
                     {cartCount > 0 && (
                         <button className="cart-btn" onClick={() => navigate('/cart')}>
-                            🛒 <span className="cart-count">{cartCount}</span>
+                            <ShoppingBag size={18} />
+                            <span className="cart-count">{cartCount}</span>
                         </button>
                     )}
                 </div>
             </div>
 
             <div className="container">
-                {/* Banner Promo per style.json */}
+                {/* Promo Banner */}
                 <div className="promo-banner">
-                    <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.85, fontWeight: 600 }}>Spesial Meja #{tableData?.table_number}</div>
-                    <div style={{ fontSize: '1.25rem', fontWeight: 700, margin: '4px 0' }}>Pesan Makanan Praktis & Cepat</div>
-                    <div style={{ fontSize: '0.82rem', opacity: 0.9 }}>Pilih menu favorit Anda dan langsung pesan dari meja.</div>
+                    <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.85, fontWeight: 600 }}>Pemesanan Meja #{tableData?.table_number}</div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: 700, margin: '4px 0' }}>Pesan Makanan & Minuman</div>
+                    <div style={{ fontSize: '0.82rem', opacity: 0.9 }}>Pilih menu favorit Anda dan langsung kirim pesanan ke dapur.</div>
                 </div>
 
-                {/* Search Bar (Pill Input per style.json) */}
-                <div className="form-group" style={{ marginBottom: '16px' }}>
+                {/* Search Bar */}
+                <div className="form-group" style={{ marginBottom: '16px', position: 'relative' }}>
                     <input
                         className="form-input"
-                        placeholder="🔍 Cari makanan, minuman, atau snack..."
+                        placeholder="Cari makanan, minuman, atau snack..."
                         value={search}
                         onChange={e => setSearch(e.target.value)}
+                        style={{ paddingLeft: '44px' }}
                     />
+                    <Search size={18} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                 </div>
 
-                {/* Category Pills (Pastel Backgrounds per style.json) */}
+                {/* Category Pills */}
                 <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '8px', marginBottom: '20px', scrollbarWidth: 'none' }}>
                     <button
                         className={`cat-pill ${!activeCategory ? 'active' : ''}`}
                         style={{ backgroundColor: !activeCategory ? 'var(--primary)' : 'var(--bg-surface)', color: !activeCategory ? '#FFF' : 'var(--text-primary)' }}
                         onClick={() => setActiveCategory(null)}
                     >
-                        🍽️ Semua
+                        Semua Menu
                     </button>
                     {categories.map((c, idx) => {
                         const pastelBg = PASTEL_COLORS[idx % PASTEL_COLORS.length];
@@ -136,10 +147,12 @@ export default function MenuPage() {
                     })}
                 </div>
 
-                {/* Product Grid per style.json */}
+                {/* Product Grid */}
                 {filteredMenus.length === 0 ? (
                     <div className="empty-state">
-                        <div className="empty-state-icon">🥗</div>
+                        <div style={{ width: '56px', height: '56px', backgroundColor: 'var(--bg-surface-muted)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px auto', color: 'var(--text-muted)' }}>
+                            <Utensils size={28} />
+                        </div>
                         <p>Menu tidak ditemukan</p>
                     </div>
                 ) : (
@@ -158,18 +171,18 @@ export default function MenuPage() {
                                                     style={{ width: '100%', height: '125px', objectFit: 'cover', borderRadius: 'var(--radius-lg)' }}
                                                 />
                                             ) : (
-                                                <div style={{ height: '125px', backgroundColor: 'var(--bg-surface-muted)', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.2rem' }}>
-                                                    🍱
+                                                <div style={{ height: '125px', backgroundColor: 'var(--bg-surface-muted)', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
+                                                    <Utensils size={32} />
                                                 </div>
                                             )}
-                                            {/* Add Circle Button Overlap per style.json productCard */}
+                                            {/* Add Circle Button */}
                                             <button
                                                 className="btn-icon-circle"
                                                 style={{ position: 'absolute', bottom: '-10px', right: '8px', boxShadow: 'var(--shadow-md)' }}
                                                 onClick={(e) => addToCart(menu, e)}
                                                 title="Tambah ke keranjang"
                                             >
-                                                {inCart ? `${inCart.quantity}` : '+'}
+                                                {inCart ? `${inCart.quantity}` : <Plus size={18} />}
                                             </button>
                                         </div>
 
@@ -185,7 +198,7 @@ export default function MenuPage() {
                                         )}
                                     </div>
 
-                                    {/* Price Text per style.json (vibrant green #33A852) */}
+                                    {/* Price Text */}
                                     <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                         <span style={{ fontWeight: 700, color: 'var(--accent-green)', fontSize: '0.95rem' }}>
                                             Rp {Number(menu.price).toLocaleString('id-ID')}
@@ -201,8 +214,9 @@ export default function MenuPage() {
             {/* Bottom Floating Bar */}
             {cartCount > 0 && (
                 <div style={{ position: 'fixed', bottom: '16px', left: '50%', transform: 'translateX(-50%)', width: 'calc(100% - 32px)', maxWidth: '480px', zIndex: 200 }}>
-                    <button className="btn btn-secondary btn-lg" style={{ boxShadow: 'var(--shadow-md)' }} onClick={() => navigate('/cart')}>
-                        🛒 Lihat Keranjang ({cartCount} item)
+                    <button className="btn btn-secondary btn-lg" style={{ boxShadow: 'var(--shadow-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }} onClick={() => navigate('/cart')}>
+                        <ShoppingBag size={20} />
+                        Lihat Keranjang ({cartCount} item)
                     </button>
                 </div>
             )}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Plus, Edit2, Trash2, CheckCircle2 } from 'lucide-react';
 import api from '../../api';
 
 export default function BankAccountPage() {
@@ -42,16 +43,18 @@ export default function BankAccountPage() {
     return (
         <div>
             <div className="admin-header">
-                <span>🏦 Pengaturan Rekening Bank</span>
-                <button className="btn btn-primary btn-sm" onClick={openAdd}>+ Tambah Rekening</button>
+                <span>Pengaturan Rekening Bank</span>
+                <button className="btn btn-primary btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={openAdd}>
+                    <Plus size={16} /> Tambah Rekening
+                </button>
             </div>
-            <div className="page-content">
+            <div>
                 {msg && <div className="success-box">{msg}</div>}
-                <p style={{ color: 'var(--gray-500)', fontSize: '0.85rem', marginBottom: '16px' }}>
-                    💡 Hanya 1 rekening dengan status <strong>Aktif</strong> yang akan ditampilkan ke pelanggan saat checkout.
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '16px' }}>
+                    Hanya 1 rekening dengan status <strong>Aktif</strong> yang akan ditampilkan ke pelanggan saat checkout.
                 </p>
                 <div className="card">
-                    {loading ? <div className="loading">Memuat...</div> : (
+                    {loading ? <div className="loading">Memuat rekening...</div> : (
                         <table className="data-table">
                             <thead><tr><th>Bank</th><th>No. Rekening</th><th>Atas Nama</th><th>Status</th><th>Aksi</th></tr></thead>
                             <tbody>
@@ -62,14 +65,14 @@ export default function BankAccountPage() {
                                         <td>{acc.account_holder}</td>
                                         <td>
                                             {acc.is_active
-                                                ? <span className="badge badge-confirmed">✅ Aktif</span>
+                                                ? <span className="badge badge-confirmed" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}><CheckCircle2 size={12} /> Aktif</span>
                                                 : <button className="btn btn-outline btn-sm" onClick={() => setActive(acc)}>Set Aktif</button>
                                             }
                                         </td>
                                         <td>
                                             <div style={{ display: 'flex', gap: '8px' }}>
-                                                <button className="btn btn-outline btn-sm" onClick={() => openEdit(acc)}>Edit</button>
-                                                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(acc.id)}>Hapus</button>
+                                                <button className="btn btn-outline btn-sm" onClick={() => openEdit(acc)}><Edit2 size={14} /></button>
+                                                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(acc.id)}><Trash2 size={14} /></button>
                                             </div>
                                         </td>
                                     </tr>

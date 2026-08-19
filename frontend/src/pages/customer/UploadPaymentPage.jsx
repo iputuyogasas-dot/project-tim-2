@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Upload, CheckCircle2, Image as ImageIcon } from 'lucide-react';
 import api from '../../api';
 
 export default function UploadPaymentPage() {
@@ -38,8 +39,10 @@ export default function UploadPaymentPage() {
 
     if (success) return (
         <div className="container" style={{ paddingTop: '60px', textAlign: 'center' }}>
-            <div style={{ fontSize: '4rem', marginBottom: '16px' }}>🎉</div>
-            <h2 style={{ marginBottom: '8px', color: 'var(--primary)', fontWeight: 700 }}>Bukti Berhasil Dikirim!</h2>
+            <div style={{ width: '72px', height: '72px', backgroundColor: 'var(--accent-green-light)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px auto', color: 'var(--accent-green)' }}>
+                <CheckCircle2 size={40} />
+            </div>
+            <h2 style={{ marginBottom: '8px', color: 'var(--primary)', fontWeight: 700 }}>Bukti Berhasil Dikirim</h2>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: 1.5 }}>
                 Kasir/Admin akan memverifikasi pembayaran Anda segera. Anda dapat memantau proses pesanan secara langsung.
             </p>
@@ -51,7 +54,7 @@ export default function UploadPaymentPage() {
         <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-page)' }}>
             <div className="topbar">
                 <div className="topbar-inner">
-                    <div className="topbar-title">📤 Upload Bukti Bayar</div>
+                    <div className="topbar-title">Upload Bukti Bayar</div>
                 </div>
             </div>
 
@@ -76,7 +79,9 @@ export default function UploadPaymentPage() {
                             ? <img src={preview} alt="Preview Bukti" style={{ maxHeight: '280px', borderRadius: 'var(--radius-md)', margin: '0 auto' }} />
                             : (
                                 <>
-                                    <div style={{ fontSize: '3rem', marginBottom: '10px' }}>📷</div>
+                                    <div style={{ width: '56px', height: '56px', backgroundColor: '#E3F0EF', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px auto', color: 'var(--primary)' }}>
+                                        <ImageIcon size={28} />
+                                    </div>
                                     <p style={{ color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.92rem' }}>Klik di sini untuk memilih gambar</p>
                                     <p style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '4px' }}>Format JPG, PNG, WEBP (Maksimal 5MB)</p>
                                 </>
@@ -85,8 +90,8 @@ export default function UploadPaymentPage() {
                     </div>
                     <input id="proof-input" type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFile} />
 
-                    <button className="btn btn-secondary btn-lg" onClick={handleUpload} disabled={loading || !file}>
-                        {loading ? '⏳ Mengirim...' : '📤 Kirim Bukti Pembayaran'}
+                    <button className="btn btn-secondary btn-lg" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }} onClick={handleUpload} disabled={loading || !file}>
+                        {loading ? 'Mengirim...' : <><Upload size={18} /> Kirim Bukti Pembayaran</>}
                     </button>
                 </div>
             </div>

@@ -1,0 +1,637 @@
+{
+    "project": "Sistem Pemesanan Menu Makanan Berbasis Barcode Meja",
+    "version": "1.0.0",
+    "tasks": [
+        {
+            "id": "SETUP-01",
+            "category": "Setup Proyek",
+            "title": "Inisialisasi struktur folder proyek",
+            "description": "Buat folder struktur proyek: /frontend (React), /backend (Express), /database",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": []
+        },
+        {
+            "id": "SETUP-02",
+            "category": "Setup Proyek",
+            "title": "Setup proyek React (Frontend)",
+            "description": "Jalankan create-react-app atau Vite, install dependensi awal (react-router-dom, axios, dll)",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "SETUP-01"
+            ]
+        },
+        {
+            "id": "SETUP-03",
+            "category": "Setup Proyek",
+            "title": "Setup proyek Express.js (Backend)",
+            "description": "Inisialisasi npm, install express, cors, dotenv, multer, jsonwebtoken, bcrypt, mysql2",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "SETUP-01"
+            ]
+        },
+        {
+            "id": "SETUP-04",
+            "category": "Setup Proyek",
+            "title": "Konfigurasi koneksi database MySQL",
+            "description": "Buat file koneksi MySQL, buat file .env untuk menyimpan DB_HOST, DB_USER, DB_PASS, DB_NAME, JWT_SECRET",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "SETUP-03"
+            ]
+        },
+        {
+            "id": "DB-01",
+            "category": "Database",
+            "title": "Buat tabel `admins`",
+            "description": "CREATE TABLE admins: id, username (unique), password (hash), full_name, role ENUM('admin','kasir'), created_at, updated_at",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "SETUP-04"
+            ]
+        },
+        {
+            "id": "DB-02",
+            "category": "Database",
+            "title": "Buat tabel `categories`",
+            "description": "CREATE TABLE categories: id, name, description, created_at, updated_at",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "SETUP-04"
+            ]
+        },
+        {
+            "id": "DB-03",
+            "category": "Database",
+            "title": "Buat tabel `menus`",
+            "description": "CREATE TABLE menus: id, category_id (FK), name, description, price, image_url, is_available, created_at, updated_at",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "DB-02"
+            ]
+        },
+        {
+            "id": "DB-04",
+            "category": "Database",
+            "title": "Buat tabel `tables`",
+            "description": "CREATE TABLE tables: id, table_number (unique), table_token (unique, random), qr_code_url, status ENUM('active','inactive'), created_at, updated_at",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "SETUP-04"
+            ]
+        },
+        {
+            "id": "DB-05",
+            "category": "Database",
+            "title": "Buat tabel `orders`",
+            "description": "CREATE TABLE orders: id, table_id (FK), customer_name, status ENUM (7 status), total_amount, notes, created_at, updated_at. Tambah INDEX pada table_id dan status",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "DB-04"
+            ]
+        },
+        {
+            "id": "DB-06",
+            "category": "Database",
+            "title": "Buat tabel `order_items`",
+            "description": "CREATE TABLE order_items: id, order_id (FK), menu_id (FK), quantity, price_at_order (snapshot harga), subtotal, note, created_at",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "DB-05",
+                "DB-03"
+            ]
+        },
+        {
+            "id": "DB-07",
+            "category": "Database",
+            "title": "Buat tabel `bank_accounts`",
+            "description": "CREATE TABLE bank_accounts: id, bank_name, account_number, account_holder, is_active, created_at, updated_at",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "SETUP-04"
+            ]
+        },
+        {
+            "id": "DB-08",
+            "category": "Database",
+            "title": "Buat tabel `payments`",
+            "description": "CREATE TABLE payments: id, order_id (FK), bank_account_id (FK), amount_transferred, proof_image_url, status ENUM('pending','verified','rejected'), verified_by (FK admins), verified_at, uploaded_at, created_at. Tambah INDEX pada status",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "DB-05",
+                "DB-07",
+                "DB-01"
+            ]
+        },
+        {
+            "id": "DB-09",
+            "category": "Database",
+            "title": "Seed data awal (admin & kategori default)",
+            "description": "Masukkan 1 akun admin default (password hash) dan beberapa kategori menu awal (Makanan, Minuman, Snack)",
+            "assignee": null,
+            "status": "todo",
+            "priority": "medium",
+            "dependencies": [
+                "DB-01",
+                "DB-02"
+            ]
+        },
+        {
+            "id": "BE-AUTH-01",
+            "category": "Backend - Autentikasi",
+            "title": "API POST /api/auth/login",
+            "description": "Endpoint login admin: validasi username & password (bcrypt), return JWT token jika berhasil",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "DB-01",
+                "SETUP-03"
+            ]
+        },
+        {
+            "id": "BE-AUTH-02",
+            "category": "Backend - Autentikasi",
+            "title": "Middleware autentikasi JWT",
+            "description": "Buat middleware verifyToken yang memeriksa header Authorization: Bearer <token> untuk melindungi semua route admin",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "BE-AUTH-01"
+            ]
+        },
+        {
+            "id": "BE-TABLE-01",
+            "category": "Backend - Meja & QR",
+            "title": "API GET /api/tables - Daftar semua meja",
+            "description": "Kembalikan semua data meja beserta status aktif/nonaktif (Hanya admin)",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "BE-AUTH-02",
+                "DB-04"
+            ]
+        },
+        {
+            "id": "BE-TABLE-02",
+            "category": "Backend - Meja & QR",
+            "title": "API POST /api/tables - Tambah meja baru",
+            "description": "Tambah meja baru, generate table_token (UUID/nanoid), generate QR code yang mengarah ke URL /order?table=id&token=xxx, simpan gambar QR ke folder /uploads/qr",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "BE-TABLE-01"
+            ]
+        },
+        {
+            "id": "BE-TABLE-03",
+            "category": "Backend - Meja & QR",
+            "title": "API PUT /api/tables/:id - Edit meja",
+            "description": "Update nomor meja, status aktif/nonaktif. Regenerate QR code jika diperlukan",
+            "assignee": null,
+            "status": "todo",
+            "priority": "medium",
+            "dependencies": [
+                "BE-TABLE-02"
+            ]
+        },
+        {
+            "id": "BE-TABLE-04",
+            "category": "Backend - Meja & QR",
+            "title": "API DELETE /api/tables/:id - Hapus meja",
+            "description": "Hapus data meja. Pastikan tidak ada pesanan aktif sebelum dihapus",
+            "assignee": null,
+            "status": "todo",
+            "priority": "medium",
+            "dependencies": [
+                "BE-TABLE-03"
+            ]
+        },
+        {
+            "id": "BE-TABLE-05",
+            "category": "Backend - Meja & QR",
+            "title": "API GET /api/tables/verify?table=id&token=xxx",
+            "description": "Endpoint publik (tanpa auth) untuk memvalidasi kombinasi table_id + token. Digunakan oleh halaman customer saat buka URL dari scan QR",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "DB-04"
+            ]
+        },
+        {
+            "id": "BE-MENU-01",
+            "category": "Backend - Menu & Kategori",
+            "title": "API GET /api/categories - Daftar kategori",
+            "description": "Endpoint publik mengembalikan semua kategori menu",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "DB-02"
+            ]
+        },
+        {
+            "id": "BE-MENU-02",
+            "category": "Backend - Menu & Kategori",
+            "title": "API CRUD /api/categories - Admin kelola kategori",
+            "description": "POST, PUT, DELETE kategori (perlu auth JWT admin)",
+            "assignee": null,
+            "status": "todo",
+            "priority": "medium",
+            "dependencies": [
+                "BE-AUTH-02",
+                "BE-MENU-01"
+            ]
+        },
+        {
+            "id": "BE-MENU-03",
+            "category": "Backend - Menu & Kategori",
+            "title": "API GET /api/menus - Daftar menu",
+            "description": "Endpoint publik mengembalikan semua menu yang tersedia (is_available=true), bisa difilter per kategori",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "DB-03"
+            ]
+        },
+        {
+            "id": "BE-MENU-04",
+            "category": "Backend - Menu & Kategori",
+            "title": "API POST /api/menus - Tambah menu baru",
+            "description": "Admin tambah menu baru dengan upload gambar menggunakan Multer. Simpan ke /uploads/menus",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "BE-AUTH-02",
+                "BE-MENU-03"
+            ]
+        },
+        {
+            "id": "BE-MENU-05",
+            "category": "Backend - Menu & Kategori",
+            "title": "API PUT /api/menus/:id - Edit menu",
+            "description": "Update data menu: nama, harga, kategori, deskripsi, status tersedia/habis, gambar",
+            "assignee": null,
+            "status": "todo",
+            "priority": "medium",
+            "dependencies": [
+                "BE-MENU-04"
+            ]
+        },
+        {
+            "id": "BE-MENU-06",
+            "category": "Backend - Menu & Kategori",
+            "title": "API DELETE /api/menus/:id - Hapus menu",
+            "description": "Hapus menu. Pastikan menghapus file gambar dari server jika ada",
+            "assignee": null,
+            "status": "todo",
+            "priority": "medium",
+            "dependencies": [
+                "BE-MENU-05"
+            ]
+        },
+        {
+            "id": "BE-ORDER-01",
+            "category": "Backend - Pesanan",
+            "title": "API POST /api/orders - Buat pesanan baru",
+            "description": "Endpoint publik (customer). Terima data: table_id, token, customer_name (opsional), items (array menu_id + qty + note). Validasi token meja, hitung total, simpan ke orders & order_items. Status awal: 'pending_payment'",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "DB-05",
+                "DB-06",
+                "BE-TABLE-05"
+            ]
+        },
+        {
+            "id": "BE-ORDER-02",
+            "category": "Backend - Pesanan",
+            "title": "API GET /api/orders/:id/status - Status pesanan customer",
+            "description": "Endpoint publik untuk customer memantau status pesanan berdasarkan ID pesanan",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "BE-ORDER-01"
+            ]
+        },
+        {
+            "id": "BE-ORDER-03",
+            "category": "Backend - Pesanan",
+            "title": "API GET /api/admin/orders - Daftar pesanan (Admin)",
+            "description": "Semua pesanan bisa difilter per status, per meja. Hanya admin (JWT)",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "BE-AUTH-02",
+                "BE-ORDER-01"
+            ]
+        },
+        {
+            "id": "BE-ORDER-04",
+            "category": "Backend - Pesanan",
+            "title": "API GET /api/admin/orders/:id - Detail pesanan (Admin)",
+            "description": "Detail satu pesanan berikut order_items dan riwayat payments. Hanya admin (JWT)",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "BE-ORDER-03"
+            ]
+        },
+        {
+            "id": "BE-ORDER-05",
+            "category": "Backend - Pesanan",
+            "title": "API PATCH /api/admin/orders/:id/status - Update status pesanan (Admin)",
+            "description": "Admin update status pesanan: confirmed, rejected, processing, completed. Hanya admin (JWT)",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "BE-ORDER-04"
+            ]
+        },
+        {
+            "id": "BE-PAYMENT-01",
+            "category": "Backend - Pembayaran",
+            "title": "API GET /api/bank-accounts/active - Info rekening aktif",
+            "description": "Endpoint publik. Kembalikan 1 rekening bank yang is_active=true untuk ditampilkan ke customer saat checkout",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "DB-07"
+            ]
+        },
+        {
+            "id": "BE-PAYMENT-02",
+            "category": "Backend - Pembayaran",
+            "title": "API CRUD /api/admin/bank-accounts - Kelola rekening (Admin)",
+            "description": "Admin bisa tambah, edit, hapus, dan set rekening mana yang aktif. Hanya admin (JWT)",
+            "assignee": null,
+            "status": "todo",
+            "priority": "medium",
+            "dependencies": [
+                "BE-AUTH-02",
+                "BE-PAYMENT-01"
+            ]
+        },
+        {
+            "id": "BE-PAYMENT-03",
+            "category": "Backend - Pembayaran",
+            "title": "API POST /api/orders/:id/payment - Upload bukti transfer",
+            "description": "Endpoint publik (customer). Upload gambar bukti transfer menggunakan Multer. Update status order menjadi 'waiting_verification'",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "BE-ORDER-01",
+                "DB-08"
+            ]
+        },
+        {
+            "id": "BE-PAYMENT-04",
+            "category": "Backend - Pembayaran",
+            "title": "API PATCH /api/admin/payments/:id/verify - Verifikasi bukti bayar (Admin)",
+            "description": "Admin ACC (verified) atau tolak (rejected) bukti pembayaran. Update status payment & order. Simpan verified_by & verified_at. Hanya admin (JWT)",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "BE-AUTH-02",
+                "BE-PAYMENT-03"
+            ]
+        },
+        {
+            "id": "FE-LAYOUT-01",
+            "category": "Frontend - Layout & Routing",
+            "title": "Setup React Router & layout halaman",
+            "description": "Buat struktur routing untuk halaman customer (/order, /cart, /checkout, /payment, /status/:id) dan halaman admin (/admin/*)",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "SETUP-02"
+            ]
+        },
+        {
+            "id": "FE-CUST-01",
+            "category": "Frontend - Customer",
+            "title": "Halaman Menu Customer",
+            "description": "Parse parameter table & token dari URL, validasi ke backend. Tampilkan daftar menu + filter kategori + search. Tambah item ke keranjang (state/localStorage)",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "FE-LAYOUT-01",
+                "BE-TABLE-05",
+                "BE-MENU-03"
+            ]
+        },
+        {
+            "id": "FE-CUST-02",
+            "category": "Frontend - Customer",
+            "title": "Halaman Keranjang (Cart)",
+            "description": "Tampilkan item di keranjang, atur jumlah (+/-), hapus item, catatan per item. Tampilkan total harga. Tombol lanjut ke checkout",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "FE-CUST-01"
+            ]
+        },
+        {
+            "id": "FE-CUST-03",
+            "category": "Frontend - Customer",
+            "title": "Halaman Checkout & Info Pembayaran",
+            "description": "Ringkasan pesanan & total. Fetch info rekening aktif dari backend. Tombol konfirmasi akan POST ke /api/orders dan redirect ke halaman upload bukti",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "FE-CUST-02",
+                "BE-ORDER-01",
+                "BE-PAYMENT-01"
+            ]
+        },
+        {
+            "id": "FE-CUST-04",
+            "category": "Frontend - Customer",
+            "title": "Halaman Upload Bukti Pembayaran",
+            "description": "Form upload gambar bukti transfer. Kirim ke API POST /api/orders/:id/payment. Validasi tipe file & ukuran di frontend",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "FE-CUST-03",
+                "BE-PAYMENT-03"
+            ]
+        },
+        {
+            "id": "FE-CUST-05",
+            "category": "Frontend - Customer",
+            "title": "Halaman Status/Tracking Pesanan",
+            "description": "Tampilkan status pesanan saat ini secara real-time menggunakan polling ke /api/orders/:id/status setiap 5-10 detik",
+            "assignee": null,
+            "status": "todo",
+            "priority": "medium",
+            "dependencies": [
+                "FE-CUST-04",
+                "BE-ORDER-02"
+            ]
+        },
+        {
+            "id": "FE-ADMIN-01",
+            "category": "Frontend - Admin",
+            "title": "Halaman Login Admin",
+            "description": "Form login username & password. POST ke /api/auth/login, simpan JWT token di localStorage. Redirect ke dashboard jika berhasil",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "FE-LAYOUT-01",
+                "BE-AUTH-01"
+            ]
+        },
+        {
+            "id": "FE-ADMIN-02",
+            "category": "Frontend - Admin",
+            "title": "Protected Route & Sidebar Admin",
+            "description": "Bungkus semua halaman admin dengan komponen ProtectedRoute yang cek JWT. Buat komponen Sidebar/Navbar navigasi admin",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "FE-ADMIN-01"
+            ]
+        },
+        {
+            "id": "FE-ADMIN-03",
+            "category": "Frontend - Admin",
+            "title": "Dashboard Ringkasan (Admin)",
+            "description": "Tampilkan jumlah pesanan per status (masuk hari ini, menunggu verifikasi, dikonfirmasi, selesai). Fetch dari backend",
+            "assignee": null,
+            "status": "todo",
+            "priority": "medium",
+            "dependencies": [
+                "FE-ADMIN-02",
+                "BE-ORDER-03"
+            ]
+        },
+        {
+            "id": "FE-ADMIN-04",
+            "category": "Frontend - Admin",
+            "title": "Halaman Daftar & Detail Pesanan (Admin)",
+            "description": "Tampilkan daftar semua pesanan bisa difilter per status/meja. Klik pesanan untuk lihat detail item, catatan, total, dan bukti pembayaran (preview gambar). Tombol ACC / Tolak",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "FE-ADMIN-02",
+                "BE-ORDER-04",
+                "BE-PAYMENT-04"
+            ]
+        },
+        {
+            "id": "FE-ADMIN-05",
+            "category": "Frontend - Admin",
+            "title": "Halaman Update Status Pesanan Lanjutan",
+            "description": "Tombol update status: 'Diproses' → 'Selesai/Diantar' setelah pesanan dikonfirmasi",
+            "assignee": null,
+            "status": "todo",
+            "priority": "medium",
+            "dependencies": [
+                "FE-ADMIN-04",
+                "BE-ORDER-05"
+            ]
+        },
+        {
+            "id": "FE-ADMIN-06",
+            "category": "Frontend - Admin",
+            "title": "Halaman Kelola Menu (Admin)",
+            "description": "Tabel daftar menu dengan tombol tambah, edit, hapus, dan toggle ketersediaan. Form tambah/edit menu dengan upload gambar",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "FE-ADMIN-02",
+                "BE-MENU-04",
+                "BE-MENU-05",
+                "BE-MENU-06"
+            ]
+        },
+        {
+            "id": "FE-ADMIN-07",
+            "category": "Frontend - Admin",
+            "title": "Halaman Kelola Kategori (Admin)",
+            "description": "CRUD kategori menu: tambah, edit, hapus",
+            "assignee": null,
+            "status": "todo",
+            "priority": "medium",
+            "dependencies": [
+                "FE-ADMIN-02",
+                "BE-MENU-02"
+            ]
+        },
+        {
+            "id": "FE-ADMIN-08",
+            "category": "Frontend - Admin",
+            "title": "Halaman Kelola Meja & Generate QR (Admin)",
+            "description": "Tampilkan daftar meja, tambah meja baru (otomatis generate QR), tampilkan gambar QR per meja, tombol download QR, edit status meja",
+            "assignee": null,
+            "status": "todo",
+            "priority": "high",
+            "dependencies": [
+                "FE-ADMIN-02",
+                "BE-TABLE-01",
+                "BE-TABLE-02",
+                "BE-TABLE-03"
+            ]
+        },
+        {
+            "id": "FE-ADMIN-09",
+            "category": "Frontend - Admin",
+            "title": "Halaman Pengaturan Rekening Bank (Admin)",
+            "description": "Tampilkan semua rekening, tambah rekening baru, set rekening mana yang aktif, hapus rekening",
+            "assignee": null,
+            "status": "todo",
+            "priority": "medium",
+            "dependencies": [
+                "FE-ADMIN-02",
+                "BE-PAYMENT-02"
+            ]
+        }
+    ]
+}

@@ -147,3 +147,18 @@ INSERT IGNORE INTO categories (name, description) VALUES
 
 INSERT IGNORE INTO bank_accounts (bank_name, account_number, account_holder, is_active) VALUES
 ('BCA', '1234567890', 'Nama Pemilik Restoran', TRUE);
+
+INSERT IGNORE INTO menus (id, category_id, name, description, price, image_url, is_available) VALUES
+(1, 1, 'Nasi Goreng Spesial Resto', 'Nasi goreng khas resto dengan telor mata sapi, sate ayam, kerupuk, dan acar segar.', 35000.00, 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=600&auto=format&fit=crop&q=80', TRUE),
+(2, 1, 'Mie Goreng Seafood', 'Mie goreng telur dengan udang segar, cumi, bakso ikan, dan sayuran segar.', 38000.00, 'https://images.unsplash.com/photo-1612927601601-6638404737ce?w=600&auto=format&fit=crop&q=80', TRUE),
+(3, 1, 'Ayam Bakar Madu', 'Ayam bakar dengan olesan bumbu madu gurih manis, disajikan dengan nasi hangat dan sambal terasi.', 42000.00, 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=600&auto=format&fit=crop&q=80', TRUE),
+(4, 1, 'Soto Ayam Lamongan', 'Soto ayam kuah kuning gurih dengan koya renyah, telor rebus, dan bihun.', 28000.00, 'https://images.unsplash.com/photo-1572656631137-7935297eff55?w=600&auto=format&fit=crop&q=80', TRUE),
+(5, 1, 'Beef Blackpepper Steak', 'Daging sapi tenderloin dengan saus lada hitam pedas gurih, kentang goreng & kentang rebus.', 75000.00, 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&auto=format&fit=crop&q=80', TRUE),
+(6, 2, 'Es Teh Manis', 'Teh melati segar disajikan dengan es batu dan gula asli.', 8000.00, 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&auto=format&fit=crop&q=80', TRUE),
+(7, 2, 'Es Jeruk Peras Segar', 'Perasan jeruk segar murni kaya vitamin C dengan es batu.', 12000.00, 'https://images.unsplash.com/photo-1613478223719-2ab802602423?w=600&auto=format&fit=crop&q=80', TRUE),
+(8, 2, 'Iced Matcha Latte', 'Matcha Uji Jepang asli dipadu dengan susu segar manis creamy.', 25000.00, 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=600&auto=format&fit=crop&q=80', TRUE),
+(9, 2, 'Alpukat Kocok Milo', 'Alpukat mentega kocok dengan topping bubuk Milo renyah dan susu kental manis.', 22000.00, 'https://images.unsplash.com/photo-1546173159-315724a31696?w=600&auto=format&fit=crop&q=80', TRUE),
+(10, 3, 'French Fries Cheese Sauce', 'Kentang goreng renyah disiram saus keju gurih melimpah.', 20000.00, 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600&auto=format&fit=crop&q=80', TRUE),
+(11, 3, 'Cireng Bumbu Rujak', 'Cireng garing di luar kenyal di dalam disajikan dengan bumbu rujak pedas manis.', 18000.00, 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&auto=format&fit=crop&q=80', TRUE),
+(12, 3, 'Pisang Goreng Keju Cokelat', 'Pisang goreng manis dengan parutan keju cheddar melimpah dan taburan susu cokelat.', 22000.00, 'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=600&auto=format&fit=crop&q=80', TRUE);
+

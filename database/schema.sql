@@ -136,8 +136,9 @@ CREATE TABLE IF NOT EXISTS payments (
 -- DB-09: Seed data awal
 -- ---------------------------------------------------------
 -- Password untuk admin123 (bcrypt hash)
-INSERT IGNORE INTO admins (username, password, full_name, role) VALUES
-('admin', '$2b$10$Nqx.6v8v9z4V7C1e2YfQnO8RBwwNaEKJ7pY7G3EkFAoMx0wCM8xXu', 'Administrator', 'admin');
+INSERT INTO admins (id, username, password, full_name, role) VALUES
+(1, 'admin', '$2b$10$xcK9VfPEUPSSNQcFXGiOueHQjXT.tZR/oPJiy6RHb/iWUpBntndbG', 'Administrator', 'admin')
+ON DUPLICATE KEY UPDATE password = VALUES(password);
 
 INSERT IGNORE INTO categories (name, description) VALUES
 ('Makanan', 'Hidangan utama dan lauk pauk'),

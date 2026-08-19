@@ -1,0 +1,312 @@
+{
+  "name": "Food Ordering App - Design System",
+  "description": "Style guide diturunkan dari referensi UI grocery/food app untuk digunakan pada Sistem Pemesanan Menu Makanan Berbasis Barcode Meja (React + MySQL)",
+  "colors": {
+    "background": {
+      "page": "#EDE8DB",
+      "surface": "#FFFFFF",
+      "surfaceMuted": "#F4F2EC",
+      "sidebar": "#FFFFFF"
+    },
+    "primary": {
+      "DEFAULT": "#1F3D2B",
+      "hover": "#16301F",
+      "light": "#2C4F3B",
+      "contrastText": "#FFFFFF",
+      "usage": "Tombol utama (Cart, teks harga gelap, ikon aktif sidebar), warna banner promo hijau tua"
+    },
+    "accent": {
+      "green": {
+        "DEFAULT": "#33A852",
+        "hover": "#2B8F46",
+        "light": "#DFF3E4",
+        "contrastText": "#FFFFFF",
+        "usage": "Tombol CTA sekunder (Shop Now), harga produk, badge diskon, indikator status aktif/tersedia"
+      },
+      "purple": {
+        "DEFAULT": "#6E3FA3",
+        "light": "#EFE6FB",
+        "usage": "Banner promo ungu"
+      },
+      "teal": {
+        "DEFAULT": "#2C6E68",
+        "light": "#E3F0EF",
+        "usage": "Banner promo hijau kebiruan"
+      },
+      "yellow": {
+        "DEFAULT": "#FFC53D",
+        "usage": "Rating bintang"
+      },
+      "red": {
+        "DEFAULT": "#EF4444",
+        "light": "#FDE8E8",
+        "usage": "Badge alergen / status ditolak / notifikasi penting"
+      }
+    },
+    "text": {
+      "primary": "#1A1A1A",
+      "secondary": "#6B6B6B",
+      "muted": "#9B9B9B",
+      "inverse": "#FFFFFF",
+      "price": "#33A852",
+      "link": "#1F3D2B"
+    },
+    "border": {
+      "DEFAULT": "#ECEAE3",
+      "light": "#F2F0EA",
+      "focus": "#1F3D2B"
+    },
+    "status": {
+      "pending": "#FFC53D",
+      "waitingVerification": "#F97316",
+      "confirmed": "#33A852",
+      "rejected": "#EF4444",
+      "processing": "#3B82F6",
+      "completed": "#1F3D2B",
+      "cancelled": "#9B9B9B"
+    },
+    "categoryIconBackgrounds": [
+      "#F7D9C4",
+      "#F4E6C1",
+      "#CDEBF7",
+      "#E8D9F3",
+      "#FBD9E4",
+      "#F9C9C0",
+      "#FADFC0",
+      "#D7EFD1"
+    ]
+  },
+  "typography": {
+    "fontFamily": {
+      "base": "'Poppins', 'Inter', sans-serif",
+      "heading": "'Poppins', 'Inter', sans-serif"
+    },
+    "fontWeight": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    },
+    "fontSize": {
+      "xs": "12px",
+      "sm": "13px",
+      "base": "14px",
+      "md": "16px",
+      "lg": "18px",
+      "xl": "22px",
+      "2xl": "28px",
+      "3xl": "34px"
+    },
+    "lineHeight": {
+      "tight": 1.2,
+      "normal": 1.5,
+      "relaxed": 1.7
+    },
+    "usage": {
+      "pageTitle": { "size": "2xl", "weight": "bold", "color": "text.primary" },
+      "sectionTitle": { "size": "lg", "weight": "semibold", "color": "text.primary" },
+      "productName": { "size": "base", "weight": "medium", "color": "text.primary" },
+      "productPrice": { "size": "md", "weight": "bold", "color": "text.price" },
+      "bodyText": { "size": "base", "weight": "regular", "color": "text.secondary" },
+      "caption": { "size": "xs", "weight": "regular", "color": "text.muted" },
+      "badge": { "size": "xs", "weight": "semibold" }
+    }
+  },
+  "spacing": {
+    "0": "0px",
+    "1": "4px",
+    "2": "8px",
+    "3": "12px",
+    "4": "16px",
+    "5": "20px",
+    "6": "24px",
+    "8": "32px",
+    "10": "40px",
+    "12": "48px",
+    "16": "64px"
+  },
+  "borderRadius": {
+    "sm": "8px",
+    "md": "14px",
+    "lg": "20px",
+    "xl": "28px",
+    "full": "999px",
+    "usage": {
+      "card": "xl",
+      "banner": "lg",
+      "categoryIcon": "lg",
+      "button": "full",
+      "input": "full",
+      "badge": "full",
+      "image": "lg"
+    }
+  },
+  "shadow": {
+    "sm": "0px 2px 6px rgba(0,0,0,0.04)",
+    "md": "0px 6px 16px rgba(0,0,0,0.06)",
+    "lg": "0px 12px 28px rgba(0,0,0,0.08)",
+    "usage": {
+      "card": "sm",
+      "modal": "lg",
+      "floatingButton": "md"
+    }
+  },
+  "layout": {
+    "containerMaxWidth": "1440px",
+    "sidebarWidth": "72px",
+    "gridGutter": "20px",
+    "cardPadding": "20px",
+    "pageBackground": "colors.background.page",
+    "panelStyle": "Konten utama dibungkus card putih besar dengan rounded corner besar (xl) mengambang di atas background krem"
+  },
+  "components": {
+    "navbar": {
+      "background": "surface",
+      "borderRadius": "full",
+      "shadow": "sm",
+      "elements": ["logoIcon", "addressText", "searchInput", "cartIconWithBadge"]
+    },
+    "sidebar": {
+      "background": "surface",
+      "borderRadius": "full",
+      "iconColorActive": "primary.DEFAULT",
+      "iconColorInactive": "text.muted",
+      "activeIndicator": "background pill hijau muda di belakang ikon aktif"
+    },
+    "banner": {
+      "borderRadius": "lg",
+      "textColor": "text.inverse",
+      "fontWeight": "bold",
+      "overlay": "gradient tipis di atas gambar produk agar teks tetap terbaca",
+      "variants": ["primary (hijau tua)", "purple", "teal"]
+    },
+    "categoryIcon": {
+      "shape": "rounded square",
+      "borderRadius": "lg",
+      "size": "64px",
+      "background": "colors.categoryIconBackgrounds (rotasi warna pastel)",
+      "labelPosition": "bawah ikon, center align"
+    },
+    "productCard": {
+      "background": "surface",
+      "borderRadius": "xl",
+      "shadow": "sm",
+      "padding": "spacing.4",
+      "imagePosition": "top, rounded",
+      "elements": ["productImage", "productName", "productWeight/variant", "priceText", "addButtonCircle"],
+      "addButton": {
+        "shape": "circle",
+        "background": "primary.DEFAULT",
+        "iconColor": "text.inverse",
+        "position": "bottom-right overlap pada gambar produk"
+      }
+    },
+    "productDetailPage": {
+      "layout": "gambar besar di kiri, info produk di kanan",
+      "priceColor": "text.price",
+      "priceWeight": "bold",
+      "quantitySelector": {
+        "shape": "pill",
+        "background": "surfaceMuted",
+        "buttonShape": "circle"
+      },
+      "ratingBadge": {
+        "icon": "star",
+        "color": "accent.yellow"
+      },
+      "primaryButton": {
+        "label": "Cart",
+        "background": "primary.DEFAULT",
+        "textColor": "text.inverse",
+        "shape": "pill"
+      },
+      "secondaryButton": {
+        "label": "Shop Now",
+        "background": "accent.green.DEFAULT",
+        "textColor": "text.inverse",
+        "shape": "pill"
+      }
+    },
+    "discountBadge": {
+      "background": "accent.green.light",
+      "textColor": "accent.green.DEFAULT",
+      "shape": "pill",
+      "fontWeight": "semibold",
+      "example": "25% OFF"
+    },
+    "cartTable": {
+      "headerTextColor": "text.muted",
+      "headerFontWeight": "medium",
+      "rowDivider": "border.light",
+      "checkbox": {
+        "shape": "rounded",
+        "activeColor": "primary.DEFAULT"
+      },
+      "quantityStepper": {
+        "shape": "pill",
+        "background": "surfaceMuted"
+      },
+      "subtotalTextWeight": "semibold"
+    },
+    "button": {
+      "primary": {
+        "background": "primary.DEFAULT",
+        "textColor": "text.inverse",
+        "borderRadius": "full",
+        "paddingX": "spacing.6",
+        "paddingY": "spacing.3",
+        "hover": "primary.hover"
+      },
+      "secondary": {
+        "background": "accent.green.DEFAULT",
+        "textColor": "text.inverse",
+        "borderRadius": "full",
+        "paddingX": "spacing.6",
+        "paddingY": "spacing.3",
+        "hover": "accent.green.hover"
+      },
+      "outline": {
+        "background": "transparent",
+        "border": "1px solid border.DEFAULT",
+        "textColor": "text.primary",
+        "borderRadius": "full"
+      },
+      "iconCircle": {
+        "size": "36px",
+        "background": "primary.DEFAULT",
+        "iconColor": "text.inverse",
+        "shape": "circle"
+      }
+    },
+    "input": {
+      "background": "surfaceMuted",
+      "borderRadius": "full",
+      "border": "none",
+      "placeholderColor": "text.muted",
+      "iconColor": "text.muted"
+    },
+    "statusBadgeOrder": {
+      "shape": "pill",
+      "fontWeight": "semibold",
+      "colorMap": "colors.status"
+    }
+  },
+  "iconography": {
+    "style": "outline, rounded stroke, minimalis",
+    "sizes": {
+      "sm": "16px",
+      "md": "20px",
+      "lg": "24px"
+    }
+  },
+  "imageryStyle": {
+    "productPhotography": "flat lay / studio shot dengan background putih atau transparan, pencahayaan lembut",
+    "cornerTreatment": "rounded corner besar pada seluruh gambar produk dan banner"
+  },
+  "notes": [
+    "Gaya visual ini condong ke 'friendly grocery/e-commerce' — warm neutral background, kartu putih besar, aksen hijau sebagai warna khas brand.",
+    "Untuk konteks Sistem Pemesanan Menu Makanan (bukan grocery), palet warna & komponen di atas tetap relevan digunakan, cukup ganti kategori produk (Snacks, Breakfast, dst) menjadi kategori menu restoran (Makanan Utama, Minuman, Dessert, dll).",
+    "Tombol 'Cart' & 'Shop Now' pada referensi dapat dipetakan menjadi tombol 'Tambah ke Keranjang' & 'Checkout' pada aplikasi pemesanan meja.",
+    "Warna status pesanan (pending, confirmed, rejected, dst) ditambahkan secara mandiri karena tidak ada pada referensi gambar, disesuaikan dengan alur status pada PRD & ERD sebelumnya."
+  ]
+}
